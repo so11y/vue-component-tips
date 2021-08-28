@@ -2,8 +2,7 @@ import * as  vscode from 'vscode';
 import VueCompoentsPathProvider from './provider/VueCompoentsPathProvider';
 import VueCompoentsProvider from './provider/VueCompoentsProvider';
 import { compoentsMap } from './provider/compoentsMap';
-import { getComponents } from './util/handle';
-
+import { getComponents } from './util/handleFile';
 
 export function activate(context: vscode.ExtensionContext) {
 
