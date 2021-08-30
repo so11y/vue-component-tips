@@ -5,22 +5,24 @@ import { compoentsMap } from './provider/compoentsMap';
 import { getComponents } from './util/handleFile';
 
 async function main() {
+    if (vscode.workspace.workspaceFolders?.length) {
 
-    const watchFiles = await getComponents(vscode.workspace.workspaceFolders);
+        const watchFiles = await getComponents(vscode.workspace.workspaceFolders);
 
-    /**
-     * 监听配置文件的修改
-     */
-    vscode.workspace.onDidChangeConfiguration(async () => {
+        /**
+         * 监听配置文件的修改
+         */
+        vscode.workspace.onDidChangeConfiguration(async () => {
 
-        compoentsMap.clear();
+            compoentsMap.clear();
 
-        watchFiles.forEach(v => v.dispose());
+            watchFiles.forEach(v => v.dispose());
 
-        await getComponents(vscode.workspace.workspaceFolders);
+            await getComponents(vscode.workspace.workspaceFolders);
 
-        vscode.window.showInformationMessage(`已重新生成完毕。`);
-    });
+            vscode.window.showInformationMessage(`已重新生成完毕。`);
+        });
+    }
 }
 
 
