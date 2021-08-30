@@ -36,6 +36,9 @@ const fileFactorys: Array<FilesConfigFactory> = [
  */
 export async function getComponents(workspaceFolder: readonly vscode.WorkspaceFolder[] | undefined) {
     const projectFileName = vscode.workspace.getConfiguration().get('zrrz.projectName');
+
+    const watchFiles: Array<vscode.FileSystemWatcher> = [];
+
     if (!isUndefined(workspaceFolder)) {
         const rootUniApp = workspaceFolder.filter(v => v.name === (projectFileName as string || "saas"));
         if (rootUniApp.length) {
@@ -55,7 +58,7 @@ export async function getComponents(workspaceFolder: readonly vscode.WorkspaceFo
                             compoentsMap.set(key, path);
                         });
 
-                        watchFile(scopePath, fileConfigItem);
+                        watchFiles.push(watchFile(scopePath, fileConfigItem));
                     }
 
                     if (index === rootUniApp.length - 1) { r(); }
@@ -66,6 +69,7 @@ export async function getComponents(workspaceFolder: readonly vscode.WorkspaceFo
             vscode.window.showInformationMessage(`当前工作区没有找到可以匹配的${projectFileName}项目`);
         }
     }
+    return watchFiles;
 }
 
 export const watchFile = (scopePath: string, fileConfigItem: FilesConfigFactory) => {
@@ -78,4 +82,5 @@ export const watchFile = (scopePath: string, fileConfigItem: FilesConfigFactory)
     watcherFiles.onDidDelete((e) => {
         compoentsMap.delete(jointFile(e.path, fileConfigItem.config));
     });
+    return watcherFiles;
 };
