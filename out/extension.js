@@ -15,15 +15,25 @@ const VueCompoentsPathProvider_1 = require("./provider/VueCompoentsPathProvider"
 const VueCompoentsProvider_1 = require("./provider/VueCompoentsProvider");
 const compoentsMap_1 = require("./provider/compoentsMap");
 const handleFile_1 = require("./util/handleFile");
+function main() {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        if ((_a = vscode.workspace.workspaceFolders) === null || _a === void 0 ? void 0 : _a.length) {
+            const watchFiles = yield (0, handleFile_1.getComponents)(vscode.workspace.workspaceFolders);
+            /**
+             * 监听配置文件的修改
+             */
+            vscode.workspace.onDidChangeConfiguration(() => __awaiter(this, void 0, void 0, function* () {
+                compoentsMap_1.compoentsMap.clear();
+                watchFiles.forEach(v => v.dispose());
+                yield (0, handleFile_1.getComponents)(vscode.workspace.workspaceFolders);
+                vscode.window.showInformationMessage(`已重新生成完毕。`);
+            }));
+        }
+    });
+}
 function activate(context) {
-    (0, handleFile_1.getComponents)(vscode.workspace.workspaceFolders);
-    /**
-     * 监听配置文件的修改
-     */
-    vscode.workspace.onDidChangeConfiguration(() => __awaiter(this, void 0, void 0, function* () {
-        yield (0, handleFile_1.getComponents)(vscode.workspace.workspaceFolders);
-        vscode.window.showInformationMessage(`已重新生成完毕。`);
-    }));
+    main();
     /**
      * 注册语法提示
      */

@@ -13,7 +13,11 @@ class VueCompoentsProvider {
         this.compoentsMap = compoentsMap;
     }
     provideCompletionItems(document, position, token, context) {
-        return Array.from(this.compoentsMap.keys()).map((componentPathName) => new vscode.CompletionItem(new CompletionItemLabel(componentPathName, `<${componentPathName}></${componentPathName}>`), vscode.CompletionItemKind.EnumMember));
+        return Array.from(this.compoentsMap.keys()).map((componentPathName) => {
+            const item = new vscode.CompletionItem(new CompletionItemLabel(componentPathName, `<${componentPathName}></${componentPathName}>`), vscode.CompletionItemKind.EnumMember);
+            item.insertText = `<${componentPathName}></${componentPathName}>`;
+            return item;
+        });
     }
 }
 exports.default = VueCompoentsProvider;
