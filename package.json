@@ -2,8 +2,11 @@
     "name": "UniSaas",
     "displayName": "",
     "description": "",
-    "version": "0.0.4",
+    "version": "0.0.6",
     "publisher": "zrrz",
+    "repository": {
+        "url": "https://github.com/2470761262/uniSaas"
+    },
     "engines": {
         "vscode": "^1.59.0"
     },

@@ -2,8 +2,7 @@ import * as  vscode from 'vscode';
 import { glob } from "glob";
 import { isUndefined } from './types';
 import { compoentsMap } from '../provider/compoentsMap';
-import { FileConfig, handleFile } from './handelFileUtil';
-
+import { FileConfig, handleFile, jointFile } from './handelFileUtil';
 
 class FilesConfigFactory {
     constructor(public config: FileConfig) {
@@ -55,6 +54,8 @@ export async function getComponents(workspaceFolder: readonly vscode.WorkspaceFo
                             const { key, path } = fileConfigItem.handleFile(filsPath, fileConfigItem.config);
                             compoentsMap.set(key, path);
                         });
+
+                        watchFile(scopePath, fileConfigItem);
                     }
 
                     if (index === rootUniApp.length - 1) { r(); }
@@ -67,3 +68,14 @@ export async function getComponents(workspaceFolder: readonly vscode.WorkspaceFo
     }
 }
 
+export const watchFile = (scopePath: string, fileConfigItem: FilesConfigFactory) => {
+    const watcherFiles = vscode.workspace.createFileSystemWatcher(scopePath, false, true, false);
+
+    watcherFiles.onDidCreate((e) => {
+        const { key, path } = fileConfigItem.handleFile(e.path, fileConfigItem.config);
+        compoentsMap.set(key, path);
+    });
+    watcherFiles.onDidDelete((e) => {
+        compoentsMap.delete(jointFile(e.path, fileConfigItem.config));
+    });
+};

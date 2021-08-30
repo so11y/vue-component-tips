@@ -1,9 +1,5 @@
-# Change Log
+# 0.6 版本
+    1. 添加文件新建删除的及时生成提示
 
-All notable changes to the "tesc" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+# 0.7 版本(下版本介绍)
+    1. 添加虚拟文件,优化插件。

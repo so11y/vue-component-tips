@@ -11,10 +11,11 @@ export function activate(context: vscode.ExtensionContext) {
     /**
      * 监听配置文件的修改
      */
-    vscode.workspace.onDidChangeConfiguration( async () => {
+    vscode.workspace.onDidChangeConfiguration(async () => {
         await getComponents(vscode.workspace.workspaceFolders);
         vscode.window.showInformationMessage(`已重新生成完毕。`);
     });
+
     /**
      * 注册语法提示
      */

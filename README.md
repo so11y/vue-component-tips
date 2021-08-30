@@ -40,23 +40,24 @@
 
 ``` typescript
 
+1. 以下是匹配规则
 
-export const filsPathConfig: IFileConfig = {
-    "/src/common/components/**/*.vue": {
+const fileFactorys: Array<FilesConfigFactory> = [
+    new FilesConfigFactory({
+        path: "/src/common/components/**/*.vue",
         alias: "",
-        sub: false,
-        handleFile: handleFile //不需要而外处理的用这个方法
-    }, //全局组件
-    "/src/components/**/*.vue": {
+        sub: false
+    }),
+    new FilesConfigFactory({
+        path: "/src/components/**/*.vue",
         alias: "gc-",
-        sub: false,
-        handleFile: handleFile //不需要而外处理的用这个方法
-    },
-    "/src/*(goods|guest|home|live|shop|single-page|user)/components/**/*.vue": {
+        sub: false
+    }),
+    new FilesConfigFactory({
+        path: "/src/*(goods|guest|home|live|shop|single-page|user)/components/**/*.vue",
         alias: "sub-",
         sub: true,
-        handleFile: handleFile //不需要而外处理的用这个方法
-    }
-};
+    })
+];
 
 ```
