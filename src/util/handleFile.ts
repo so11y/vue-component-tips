@@ -1,8 +1,8 @@
 import * as  vscode from 'vscode';
 import { glob } from "glob";
 import { isUndefined } from './types';
-import { compoentsMap } from '../provider/compoentsMap';
-import { FileConfig, handleFile, jointFile } from './handelFileUtil';
+import { FileConfig, handleFile, jointFile, removeStore, setStore } from './handelFileUtil';
+import { vscodeStoreKey } from './const';
 
 class FilesConfigFactory {
     constructor(public config: FileConfig) {
@@ -34,7 +34,7 @@ const fileFactorys: Array<FilesConfigFactory> = [
  *
  * @example 获取匹配的文件
  */
-export async function getComponents(workspaceFolder: readonly vscode.WorkspaceFolder[] | undefined) {
+export async function getComponents(workspaceFolder: readonly vscode.WorkspaceFolder[] | undefined, context: vscode.ExtensionContext) {
     const projectFileName = vscode.workspace.getConfiguration().get('zrrz.projectName');
 
     const watchFiles: Array<vscode.FileSystemWatcher> = [];
@@ -54,17 +54,19 @@ export async function getComponents(workspaceFolder: readonly vscode.WorkspaceFo
 
                         //解析出的每组文件按规定方式重新生成提示命名
                         vueFiles.forEach((filsPath: string) => {
-                            const { key, path } = fileConfigItem.handleFile(filsPath, fileConfigItem.config);
-                            compoentsMap.set(key, path);
+
+                            setStore(context, fileConfigItem.handleFile(filsPath, fileConfigItem.config));
+
                         });
 
-                        watchFiles.push(watchFile(scopePath, fileConfigItem));
+                        watchFiles.push(watchFile(scopePath, fileConfigItem, context));
                     }
 
                     if (index === rootUniApp.length - 1) { r(); }
                 });
             });
-            vscode.window.showInformationMessage(`${projectFileName}共生成提示组件共${compoentsMap.size}个`);
+
+            vscode.window.showInformationMessage(`${projectFileName}共生成提示组件共${Object.keys(context.workspaceState.get(vscodeStoreKey)!).length}个`);
         } else {
             vscode.window.showInformationMessage(`当前工作区没有找到可以匹配的${projectFileName}项目`);
         }
@@ -72,15 +74,19 @@ export async function getComponents(workspaceFolder: readonly vscode.WorkspaceFo
     return watchFiles;
 }
 
-export const watchFile = (scopePath: string, fileConfigItem: FilesConfigFactory) => {
+export const watchFile = (scopePath: string, fileConfigItem: FilesConfigFactory, context: vscode.ExtensionContext) => {
     const watcherFiles = vscode.workspace.createFileSystemWatcher(scopePath, false, true, false);
 
     watcherFiles.onDidCreate((e) => {
-        const { key, path } = fileConfigItem.handleFile(e.path, fileConfigItem.config);
-        compoentsMap.set(key, path);
+
+        setStore(context, fileConfigItem.handleFile(e.path, fileConfigItem.config));
+
     });
+
     watcherFiles.onDidDelete((e) => {
-        compoentsMap.delete(jointFile(e.path, fileConfigItem.config));
+
+        removeStore(context, jointFile(e.path, fileConfigItem.config));
     });
+
     return watcherFiles;
 };

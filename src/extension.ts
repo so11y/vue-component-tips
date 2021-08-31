@@ -1,24 +1,43 @@
 import * as  vscode from 'vscode';
 import VueCompoentsPathProvider from './provider/VueCompoentsPathProvider';
 import VueCompoentsProvider from './provider/VueCompoentsProvider';
-import { compoentsMap } from './provider/compoentsMap';
 import { getComponents } from './util/handleFile';
+import { vscodeStoreKey } from './util/const';
+import { clearStore } from './util/handelFileUtil';
 
-async function main() {
+
+
+async function init(context: vscode.ExtensionContext): Promise<vscode.FileSystemWatcher[]> {
+    if (!context.workspaceState.get(vscodeStoreKey)) {
+
+        context.workspaceState.update(vscodeStoreKey, {});
+
+        return await getComponents(vscode.workspace.workspaceFolders, context);
+    }
+    return [];
+}
+
+
+async function main(context: vscode.ExtensionContext) {
+
     if (vscode.workspace.workspaceFolders?.length) {
 
-        const watchFiles = await getComponents(vscode.workspace.workspaceFolders);
+        const watchFiles: vscode.FileSystemWatcher[] = [];
+
+        watchFiles.push(...await init(context));
 
         /**
          * 监听配置文件的修改
          */
         vscode.workspace.onDidChangeConfiguration(async () => {
 
-            compoentsMap.clear();
+            clearStore(context);
 
-            watchFiles.forEach(v => v.dispose());
+            while (watchFiles.length) {
+                watchFiles.shift()?.dispose();
+            }
 
-            await getComponents(vscode.workspace.workspaceFolders);
+            watchFiles.push(...await getComponents(vscode.workspace.workspaceFolders, context));
 
             vscode.window.showInformationMessage(`已重新生成完毕。`);
         });
@@ -29,12 +48,12 @@ async function main() {
 export function activate(context: vscode.ExtensionContext) {
 
 
-    main();
+    main(context);
     /**
      * 注册语法提示
      */
     context.subscriptions.push(
-        vscode.languages.registerCompletionItemProvider('vue', new VueCompoentsProvider(compoentsMap))
+        vscode.languages.registerCompletionItemProvider('vue', new VueCompoentsProvider(context))
     );
 
     /**
@@ -42,7 +61,7 @@ export function activate(context: vscode.ExtensionContext) {
      */
     context.subscriptions.push(vscode.languages.registerDefinitionProvider(
         'vue',
-        new VueCompoentsPathProvider(compoentsMap)
+        new VueCompoentsPathProvider(context)
     ));
 }
 

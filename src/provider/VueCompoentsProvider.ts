@@ -1,4 +1,5 @@
 import * as  vscode from 'vscode';
+import { vscodeStoreKey } from '../util/const';
 import { ICompoentsMap } from './compoentsMap';
 
 
@@ -10,10 +11,16 @@ class CompletionItemLabel implements vscode.CompletionItemLabel {
 }
 
 export default class VueCompoentsProvider implements vscode.CompletionItemProvider {
-    constructor(private compoentsMap: ICompoentsMap) { }
+    constructor(private vscodeContext: vscode.ExtensionContext) { }
     provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext): vscode.ProviderResult<vscode.CompletionItem[] | vscode.CompletionList<vscode.CompletionItem>> {
 
-        return Array.from(this.compoentsMap.keys()).map((componentPathName) => {
+        const workspaceVueCompoents = Object.keys(this.vscodeContext.workspaceState.get(vscodeStoreKey)!);
+
+        if (!workspaceVueCompoents.length) {
+            return [];
+        }
+
+        return workspaceVueCompoents.map((componentPathName) => {
             const item = new vscode.CompletionItem(
                 new CompletionItemLabel(
                     componentPathName,

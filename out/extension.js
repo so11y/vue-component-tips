@@ -13,35 +13,49 @@ exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const VueCompoentsPathProvider_1 = require("./provider/VueCompoentsPathProvider");
 const VueCompoentsProvider_1 = require("./provider/VueCompoentsProvider");
-const compoentsMap_1 = require("./provider/compoentsMap");
 const handleFile_1 = require("./util/handleFile");
-function main() {
+const const_1 = require("./util/const");
+const handelFileUtil_1 = require("./util/handelFileUtil");
+function init(context) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!context.workspaceState.get(const_1.vscodeStoreKey)) {
+            context.workspaceState.update(const_1.vscodeStoreKey, {});
+            return yield (0, handleFile_1.getComponents)(vscode.workspace.workspaceFolders, context);
+        }
+        return [];
+    });
+}
+function main(context) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
         if ((_a = vscode.workspace.workspaceFolders) === null || _a === void 0 ? void 0 : _a.length) {
-            const watchFiles = yield (0, handleFile_1.getComponents)(vscode.workspace.workspaceFolders);
+            const watchFiles = [];
+            watchFiles.push(...yield init(context));
             /**
              * 监听配置文件的修改
              */
             vscode.workspace.onDidChangeConfiguration(() => __awaiter(this, void 0, void 0, function* () {
-                compoentsMap_1.compoentsMap.clear();
-                watchFiles.forEach(v => v.dispose());
-                yield (0, handleFile_1.getComponents)(vscode.workspace.workspaceFolders);
+                var _b;
+                (0, handelFileUtil_1.clearStore)(context);
+                while (watchFiles.length) {
+                    (_b = watchFiles.shift()) === null || _b === void 0 ? void 0 : _b.dispose();
+                }
+                watchFiles.push(...yield (0, handleFile_1.getComponents)(vscode.workspace.workspaceFolders, context));
                 vscode.window.showInformationMessage(`已重新生成完毕。`);
             }));
         }
     });
 }
 function activate(context) {
-    main();
+    main(context);
     /**
      * 注册语法提示
      */
-    context.subscriptions.push(vscode.languages.registerCompletionItemProvider('vue', new VueCompoentsProvider_1.default(compoentsMap_1.compoentsMap)));
+    context.subscriptions.push(vscode.languages.registerCompletionItemProvider('vue', new VueCompoentsProvider_1.default(context)));
     /**
      * 注册文件定位
      */
-    context.subscriptions.push(vscode.languages.registerDefinitionProvider('vue', new VueCompoentsPathProvider_1.default(compoentsMap_1.compoentsMap)));
+    context.subscriptions.push(vscode.languages.registerDefinitionProvider('vue', new VueCompoentsPathProvider_1.default(context)));
 }
 exports.activate = activate;
 function deactivate() { }

@@ -1,5 +1,11 @@
 "use strict";
+/**
+ * 用来后面给Map的value存储
+ */
+// export interface IVueFile {
+//     fileName: String;
+//     path: String;
+//     perentPath: String;
+// }
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.compoentsMap = void 0;
-exports.compoentsMap = new Map();
 //# sourceMappingURL=compoentsMap.js.map

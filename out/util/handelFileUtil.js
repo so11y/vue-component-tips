@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handleFile = exports.jointFile = void 0;
+exports.clearStore = exports.removeStore = exports.setStore = exports.handleFile = exports.jointFile = void 0;
+const const_1 = require("./const");
 const getFileName = (filsPath) => {
     return filsPath.slice(filsPath.lastIndexOf("/") + 1, filsPath.lastIndexOf("."));
 };
@@ -34,4 +35,20 @@ const handleFile = (filePath, scopeConfig) => {
     };
 };
 exports.handleFile = handleFile;
+const setStore = (context, opt) => {
+    const compoents = context.workspaceState.get(const_1.vscodeStoreKey);
+    compoents[opt.key] = opt.path;
+    context.workspaceState.update(const_1.vscodeStoreKey, compoents);
+};
+exports.setStore = setStore;
+const removeStore = (context, compoentsName) => {
+    const compoents = context.workspaceState.get(const_1.vscodeStoreKey);
+    Reflect.deleteProperty(compoents, compoentsName);
+    context.workspaceState.update(const_1.vscodeStoreKey, compoents);
+};
+exports.removeStore = removeStore;
+const clearStore = (context) => {
+    context.workspaceState.update(const_1.vscodeStoreKey, {});
+};
+exports.clearStore = clearStore;
 //# sourceMappingURL=handelFileUtil.js.map

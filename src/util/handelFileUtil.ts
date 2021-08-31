@@ -1,3 +1,6 @@
+import * as vscode from "vscode";
+import { ICompoentsMap } from "../provider/compoentsMap";
+import { vscodeStoreKey } from "./const";
 
 type HandleFile = (filePath: string, scopeConfig: FileConfig) => Record<"key" | "path", string>;
 
@@ -42,4 +45,38 @@ export const handleFile: HandleFile = (filePath, scopeConfig) => {
         key: jointFile(filePath, scopeConfig),
         path: filePath
     };
+};
+
+
+export const setStore = (context: vscode.ExtensionContext, opt: { key: string, path: string }) => {
+
+    const compoents: ICompoentsMap = context.workspaceState.get(vscodeStoreKey)!;
+
+    compoents[opt.key] = opt.path;
+
+    context.workspaceState.update(
+        vscodeStoreKey,
+        compoents
+    );
+
+};
+
+export const removeStore = (context: vscode.ExtensionContext, compoentsName: string) => {
+
+    const compoents: ICompoentsMap = context.workspaceState.get(vscodeStoreKey)!;
+
+    Reflect.deleteProperty(compoents, compoentsName);
+
+    context.workspaceState.update(
+        vscodeStoreKey,
+        compoents
+    );
+
+};
+
+export const clearStore = (context: vscode.ExtensionContext) =>{
+    context.workspaceState.update(
+        vscodeStoreKey,
+        {}
+    );
 };
