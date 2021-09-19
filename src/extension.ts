@@ -10,13 +10,13 @@ import { clearStore } from './util/handelFileUtil';
 
 async function init(context: vscode.ExtensionContext): Promise<vscode.FileSystemWatcher[]> {
     // is dev environment
-    // if (!context.workspaceState.get(vscodeStoreKey)) {
+    if (!context.workspaceState.get(vscodeStoreKey)) {
 
-    context.workspaceState.update(vscodeStoreKey, {});
+        context.workspaceState.update(vscodeStoreKey, {});
 
-    return await getComponents(vscode.workspace.workspaceFolders, context);
-    // }
-    // return [];
+        return await getComponents(vscode.workspace.workspaceFolders, context);
+    }
+    return [];
 }
 
 

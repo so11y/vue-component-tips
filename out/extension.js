@@ -20,11 +20,11 @@ const handelFileUtil_1 = require("./util/handelFileUtil");
 function init(context) {
     return __awaiter(this, void 0, void 0, function* () {
         // is dev environment
-        // if (!context.workspaceState.get(vscodeStoreKey)) {
-        context.workspaceState.update(const_1.vscodeStoreKey, {});
-        return yield (0, handleFile_1.getComponents)(vscode.workspace.workspaceFolders, context);
-        // }
-        // return [];
+        if (!context.workspaceState.get(const_1.vscodeStoreKey)) {
+            context.workspaceState.update(const_1.vscodeStoreKey, {});
+            return yield (0, handleFile_1.getComponents)(vscode.workspace.workspaceFolders, context);
+        }
+        return [];
     });
 }
 function main(context) {
