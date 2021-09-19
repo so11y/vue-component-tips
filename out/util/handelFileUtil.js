@@ -37,7 +37,9 @@ const handleFile = (filePath, scopeConfig) => {
 exports.handleFile = handleFile;
 const setStore = (context, opt) => {
     const compoents = context.workspaceState.get(const_1.vscodeStoreKey);
-    compoents[opt.key] = opt.path;
+    compoents[opt.key] = {
+        path: opt.path
+    };
     context.workspaceState.update(const_1.vscodeStoreKey, compoents);
 };
 exports.setStore = setStore;

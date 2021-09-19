@@ -13,16 +13,18 @@ exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const VueCompoentsPathProvider_1 = require("./provider/VueCompoentsPathProvider");
 const VueCompoentsProvider_1 = require("./provider/VueCompoentsProvider");
+const VuePropsProvider_1 = require("./provider/VuePropsProvider");
 const handleFile_1 = require("./util/handleFile");
 const const_1 = require("./util/const");
 const handelFileUtil_1 = require("./util/handelFileUtil");
 function init(context) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!context.workspaceState.get(const_1.vscodeStoreKey)) {
-            context.workspaceState.update(const_1.vscodeStoreKey, {});
-            return yield (0, handleFile_1.getComponents)(vscode.workspace.workspaceFolders, context);
-        }
-        return [];
+        // is dev environment
+        // if (!context.workspaceState.get(vscodeStoreKey)) {
+        context.workspaceState.update(const_1.vscodeStoreKey, {});
+        return yield (0, handleFile_1.getComponents)(vscode.workspace.workspaceFolders, context);
+        // }
+        // return [];
     });
 }
 function main(context) {
@@ -56,6 +58,10 @@ function activate(context) {
      * 注册文件定位
      */
     context.subscriptions.push(vscode.languages.registerDefinitionProvider('vue', new VueCompoentsPathProvider_1.default(context)));
+    /**
+      * 注册VueProps提示
+      */
+    context.subscriptions.push(vscode.languages.registerCompletionItemProvider('vue', new VuePropsProvider_1.default(context), ":"));
 }
 exports.activate = activate;
 function deactivate() { }

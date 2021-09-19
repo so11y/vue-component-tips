@@ -1,6 +1,7 @@
 import * as  vscode from 'vscode';
 import VueCompoentsPathProvider from './provider/VueCompoentsPathProvider';
 import VueCompoentsProvider from './provider/VueCompoentsProvider';
+import VuePropsProvider from "./provider/VuePropsProvider";
 import { getComponents } from './util/handleFile';
 import { vscodeStoreKey } from './util/const';
 import { clearStore } from './util/handelFileUtil';
@@ -8,13 +9,14 @@ import { clearStore } from './util/handelFileUtil';
 
 
 async function init(context: vscode.ExtensionContext): Promise<vscode.FileSystemWatcher[]> {
-    if (!context.workspaceState.get(vscodeStoreKey)) {
+    // is dev environment
+    // if (!context.workspaceState.get(vscodeStoreKey)) {
 
-        context.workspaceState.update(vscodeStoreKey, {});
+    context.workspaceState.update(vscodeStoreKey, {});
 
-        return await getComponents(vscode.workspace.workspaceFolders, context);
-    }
-    return [];
+    return await getComponents(vscode.workspace.workspaceFolders, context);
+    // }
+    // return [];
 }
 
 
@@ -49,6 +51,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
     main(context);
+
     /**
      * 注册语法提示
      */
@@ -62,6 +65,15 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.languages.registerDefinitionProvider(
         'vue',
         new VueCompoentsPathProvider(context)
+    ));
+
+    /**
+      * 注册VueProps提示
+      */
+    context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
+        'vue',
+        new VuePropsProvider(context),
+        ":"
     ));
 }
 

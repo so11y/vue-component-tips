@@ -32,7 +32,7 @@ class VueCompoentsPathProvider {
         }
         return iterationKeys
             .filter(v => v.includes(selectText))
-            .map(v => new vscode.Location(vscode.Uri.file(workspaceVueCompoents[v]), new vscode.Position(0, 0)));
+            .map(v => new vscode.Location(vscode.Uri.file(workspaceVueCompoents[v].path), new vscode.Position(0, 0)));
     }
 }
 exports.default = VueCompoentsPathProvider;

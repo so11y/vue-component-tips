@@ -52,7 +52,9 @@ export const setStore = (context: vscode.ExtensionContext, opt: { key: string, p
 
     const compoents: ICompoentsMap = context.workspaceState.get(vscodeStoreKey)!;
 
-    compoents[opt.key] = opt.path;
+    compoents[opt.key] = {
+        path:opt.path
+    };
 
     context.workspaceState.update(
         vscodeStoreKey,

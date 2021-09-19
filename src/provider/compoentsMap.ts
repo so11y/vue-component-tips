@@ -12,6 +12,18 @@
 
 // export const compoentsMap: ICompoentsMap = new Map<string, string>();
 
+type propsType = Boolean | String | Array<any> | Object | Number;
+
+export type ICompoentsMap = {
+    [key: string]: {
+        path: string,
+        sfcProps?: {
+            [key: string]: {
+                type: propsType
+            }
+        },
+    }
+};
 
 
-export type ICompoentsMap = { [key: string]: string };
+
