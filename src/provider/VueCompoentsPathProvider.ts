@@ -1,13 +1,24 @@
-import * as vscode from "vscode";
+import {
+    DefinitionProvider,
+    CancellationToken,
+    Position,
+    ExtensionContext,
+    TextDocument,
+    ProviderResult,
+    Definition,
+    Location,
+    Uri
+} from "vscode";
 import { vscodeStoreKey } from "../util/const";
 import { ICompoentsMap } from "./compoentsMap";
 import { getHtmlTag } from "../parse/htmlParseIndex";
 
 
-export default class VueCompoentsPathProvider implements vscode.DefinitionProvider {
-    constructor(private vscodeContext: vscode.ExtensionContext) { }
+export default class VueCompoentsPathProvider implements DefinitionProvider {
 
-    provideDefinition(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): vscode.ProviderResult<vscode.Definition | vscode.LocationLink[]> {
+    constructor(private vscodeContext: ExtensionContext) { }
+
+    provideDefinition(document: TextDocument, position: Position): ProviderResult<Definition> {
 
         const workspaceVueCompoents: ICompoentsMap = this.vscodeContext.workspaceState.get(vscodeStoreKey)!;
 
@@ -16,16 +27,14 @@ export default class VueCompoentsPathProvider implements vscode.DefinitionProvid
         if (!iterationKeys.length) {
             return [];
         }
-        /**
-         * 获取当前的tag
-         */
+
         const selectText = getHtmlTag(document.lineAt(position.line).text, position.character);
 
         return iterationKeys
             .filter(v => v.includes(selectText))
-            .map(v => new vscode.Location(
-                vscode.Uri.file(workspaceVueCompoents[v].path),
-                new vscode.Position(0, 0)
+            .map(v => new Location(
+                Uri.file(workspaceVueCompoents[v].path),
+                new Position(0, 0)
             ));
     }
 }

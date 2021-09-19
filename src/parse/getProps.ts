@@ -1,8 +1,12 @@
 import babelToProps from "./babelToProps";
 import * as vscode from "vscode";
 
-
-export default (path: string): Promise<string[]> => {
+type Props = {
+    key: string,
+    default: string,
+    enum: string
+};
+export default (path: string): Promise<Props[]> => {
     return new Promise((r) => {
         vscode.workspace.fs.readFile(vscode.Uri.file(path)).then((v) => {
             const startStr = 'export default';
@@ -10,7 +14,7 @@ export default (path: string): Promise<string[]> => {
             const strFile = v.toString();
             const source = strFile.slice(strFile.indexOf(startStr), strFile.lastIndexOf(lastStr));
 
-            babelToProps(source, (d: string[]) => {
+            babelToProps(source, (d: Props[]) => {
                 r(d);
             });
         });

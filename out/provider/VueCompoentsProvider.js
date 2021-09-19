@@ -1,44 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const vscode = require("vscode");
+const vscode_1 = require("vscode");
 const const_1 = require("../util/const");
-class CompletionItemLabel {
-    constructor(label, description, detail) {
-        this.label = label;
-        this.description = description;
-        this.detail = detail;
-    }
-}
+const htmlParseIndex_1 = require("../parse/htmlParseIndex");
+const realize_1 = require("../realize/realize");
 class VueCompoentsProvider {
     constructor(vscodeContext) {
         this.vscodeContext = vscodeContext;
     }
     provideCompletionItems(document, position, token, context) {
-        const activeDocumentText = document.getText();
-        const offsetIndex = document.offsetAt(position);
-        const insetOffset = offsetIndex >= activeDocumentText.indexOf("<template>") && offsetIndex <= activeDocumentText.lastIndexOf("</template>");
+        const isInTemplateInside = (0, htmlParseIndex_1.inOutsideTemplateInside)(document.getText(), document.offsetAt(position));
         //判断是否是在template内部
-        if (insetOffset) {
-            const text = document.getText();
-            // 通过前后字符串拼接成选择文本
-            let posIndex = document.offsetAt(position);
-            let textMeta = text.substr(posIndex, 1);
-            let isInHtmlInside = false;
-            while (textMeta !== ">" && isInHtmlInside === false) {
-                if (textMeta === "<") {
-                    isInHtmlInside = true;
-                }
-                textMeta = text.substr(--posIndex, 1);
-            }
+        if (isInTemplateInside) {
             // 判断是否是在标签内部
-            if (!isInHtmlInside) {
+            if (!(0, htmlParseIndex_1.isInHtmlAttrInside)(document.getText(), document.offsetAt(position))) {
                 const workspaceVueCompoents = Object.keys(this.vscodeContext.workspaceState.get(const_1.vscodeStoreKey));
                 if (!workspaceVueCompoents.length) {
                     return [];
                 }
                 return workspaceVueCompoents.map((componentPathName) => {
-                    const item = new vscode.CompletionItem(new CompletionItemLabel(componentPathName, `<${componentPathName}></${componentPathName}>`), vscode.CompletionItemKind.EnumMember);
-                    item.insertText = `<${componentPathName}></${componentPathName}>`;
+                    const item = new vscode_1.CompletionItem(new realize_1.VCompletionItemLabel(componentPathName, `<${componentPathName}></${componentPathName}>`), vscode_1.CompletionItemKind.EnumMember);
+                    item.insertText = new vscode_1.SnippetString(`<${componentPathName}>$1</${componentPathName}>`);
                     return item;
                 });
             }

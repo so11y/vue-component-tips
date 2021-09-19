@@ -39,6 +39,7 @@
     },
     "dependencies": {
         "@babel/core": "^7.15.5",
+        "@babel/generator": "^7.15.4",
         "glob": "^7.1.7",
         "lodash": "^4.17.21"
     },
