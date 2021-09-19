@@ -1,6 +1,8 @@
 import * as vscode from "vscode";
 import { vscodeStoreKey } from "../util/const";
 import { ICompoentsMap } from "./compoentsMap";
+import { getHtmlTag } from "../parse/htmlParseIndex";
+
 
 export default class VueCompoentsPathProvider implements vscode.DefinitionProvider {
     constructor(private vscodeContext: vscode.ExtensionContext) { }
@@ -14,32 +16,10 @@ export default class VueCompoentsPathProvider implements vscode.DefinitionProvid
         if (!iterationKeys.length) {
             return [];
         }
-
-        const line = document.lineAt(position.line);
-
-        const textSplite = [' ', '<', '>', '"', '\'', '.', '\\', "=", ":", "@", "(", ")", "[", "]", "{", "}", ",", "!"];
-
-        // 通过前后字符串拼接成选择文本
-        let posIndex = position.character;
-
-        let textMeta = line.text.substr(posIndex, 1);
-
-        let selectText = '';
-
-        // 前向获取符合要求的字符串
-        while (textSplite.indexOf(textMeta) === -1 && posIndex <= line.text.length) {
-            selectText += textMeta;
-            textMeta = line.text.substr(++posIndex, 1);
-        }
-
-        // 往后获取符合要求的字符串
-        posIndex = position.character - 1;
-        textMeta = line.text.substr(posIndex, 1);
-        while (textSplite.indexOf(textMeta) === -1 && posIndex > 0) {
-            selectText = textMeta + selectText;
-            textMeta = line.text.substr(--posIndex, 1);
-        }
-
+        /**
+         * 获取当前的tag
+         */
+        const selectText = getHtmlTag(document.lineAt(position.line).text, position.character);
 
         return iterationKeys
             .filter(v => v.includes(selectText))
