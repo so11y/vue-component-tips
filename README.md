@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-28 18:12:20
- * @LastEditTime: 2021-09-27 16:56:13
- * @LastEditors: your name
+ * @LastEditTime: 2021-09-27 17:02:10
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \testd:\correlationComponents\tesc\README.md
 -->
@@ -67,5 +67,20 @@ const fileFactorys: Array<FilesConfigFactory> = [
         sub: true,
     })
 ];
+
+```
+
+6. 枚举提示 (在使用这个组件提示color属性时会触发枚举提示,混合了','符号将不会提示枚举,只提示default)
+
+``` js
+
+props:{
+    //@enum 'blue'|'black'|'pink'
+    color:{
+        type:String,
+        default:"red"
+    }
+}
+
 
 ```
