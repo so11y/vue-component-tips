@@ -1,12 +1,12 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-28 18:12:20
- * @LastEditTime: 2021-09-27 17:02:10
+ * @LastEditTime: 2021-09-27 17:04:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \testd:\correlationComponents\tesc\README.md
 -->
-# uniSass README
+# uniSass README 有兴趣一起玩的请联系
 
 1. ### 如果不能安装请更新vscode
 
