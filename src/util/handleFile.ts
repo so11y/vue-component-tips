@@ -12,23 +12,10 @@ class FilesConfigFactory {
     }
 }
 
-const fileFactorys: Array<FilesConfigFactory> = [
-    new FilesConfigFactory({
-        path: "/src/common/components/**/*.vue",
-        alias: "",
-        sub: false
-    }),
-    new FilesConfigFactory({
-        path: "/src/components/**/*.vue",
-        alias: "gc-",
-        sub: false
-    }),
-    new FilesConfigFactory({
-        path: "/src/*(goods|guest|home|live|shop|single-page|user)/components/**/*.vue",
-        alias: "sub-",
-        sub: true,
-    })
-];
+const getFileFactorys = () => {
+    const configList: Array<FileConfig> = vscode.workspace.getConfiguration().get('zrrz.configList') || [];
+    return configList.map(v => new FilesConfigFactory(v));
+};
 
 /**
  *
@@ -40,8 +27,13 @@ export async function getComponents(workspaceFolder: readonly vscode.WorkspaceFo
     const watchFiles: Array<vscode.FileSystemWatcher> = [];
 
     if (!isUndefined(workspaceFolder)) {
+
         const rootUniApp = workspaceFolder.filter(v => v.name === (projectFileName as string || "saas"));
+
+        const fileFactorys = getFileFactorys();
+
         if (rootUniApp.length) {
+
             await new Promise<void>(r => {
 
                 //工作区

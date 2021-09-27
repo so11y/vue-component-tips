@@ -25,6 +25,27 @@
                     "type": "string",
                     "default": "saas",
                     "description": "你的项目根文件名称"
+                },
+                "zrrz.configList": {
+                    "type": "array",
+                    "description": "扫描文件配置",
+                    "default": [
+                        {
+                            "path": "/src/common/components/**/*.vue",
+                            "alias": "",
+                            "sub": false
+                        },
+                        {
+                            "path": "/src/components/**/*.vue",
+                            "alias": "gc-",
+                            "sub": false
+                        },
+                        {
+                            "path": "/src/*(goods|guest|home|live|shop|single-page|user)/components/**/*.vue",
+                            "alias": "sub-",
+                            "sub": true
+                        }
+                    ]
                 }
             }
         }

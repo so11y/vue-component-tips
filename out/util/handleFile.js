@@ -23,23 +23,10 @@ class FilesConfigFactory {
         return (0, handelFileUtil_1.handleFile)(filePath, scopeConfig);
     }
 }
-const fileFactorys = [
-    new FilesConfigFactory({
-        path: "/src/common/components/**/*.vue",
-        alias: "",
-        sub: false
-    }),
-    new FilesConfigFactory({
-        path: "/src/components/**/*.vue",
-        alias: "gc-",
-        sub: false
-    }),
-    new FilesConfigFactory({
-        path: "/src/*(goods|guest|home|live|shop|single-page|user)/components/**/*.vue",
-        alias: "sub-",
-        sub: true,
-    })
-];
+const getFileFactorys = () => {
+    const configList = vscode.workspace.getConfiguration().get('zrrz.configList') || [];
+    return configList.map(v => new FilesConfigFactory(v));
+};
 /**
  *
  * @example 获取匹配的文件
@@ -50,6 +37,7 @@ function getComponents(workspaceFolder, context) {
         const watchFiles = [];
         if (!(0, types_1.isUndefined)(workspaceFolder)) {
             const rootUniApp = workspaceFolder.filter(v => v.name === (projectFileName || "saas"));
+            const fileFactorys = getFileFactorys();
             if (rootUniApp.length) {
                 yield new Promise(r => {
                     //工作区

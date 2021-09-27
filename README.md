@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-28 18:12:20
+ * @LastEditTime: 2021-09-27 16:56:13
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \testd:\correlationComponents\tesc\README.md
+-->
 # uniSass README
 
 1. ### 如果不能安装请更新vscode
@@ -40,17 +48,17 @@
 
 ``` typescript
 
-1. 以下是匹配规则
+1. 以下是匹配规则 用于参考
 
 const fileFactorys: Array<FilesConfigFactory> = [
     new FilesConfigFactory({
-        path: "/src/common/components/**/*.vue",
+        path: "/src/common/components/**/*.vue",//扫描的路径
         alias: "",
-        sub: false
+        sub: false //是否是属于模块组件false
     }),
     new FilesConfigFactory({
         path: "/src/components/**/*.vue",
-        alias: "gc-",
+        alias: "gc-",//组件前缀  components/todo.vue  --> <gc-todo></gc-todo>
         sub: false
     }),
     new FilesConfigFactory({

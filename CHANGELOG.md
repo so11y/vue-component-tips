@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-09-20 04:13:40
+ * @LastEditTime: 2021-09-27 16:57:54
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \testd:\correlationComponents\tesc\CHANGELOG.md
+-->
 # 0.6 版本
 
     1. 添加文件新建删除的及时生成提示
@@ -43,6 +51,10 @@
 >   选择了#blue 然后又想重新选择#red
 >   是不会重新触发的,需要把 :color = 删除,然后重新键入
 >   :co... 再次触发属性提示 >> 然后在触发props的枚举提示
+
+# 1.3 版本
+
+    1. 开放了配置在设置->>扩展->>uniapp扫描提示组件中修改配置
 
 # 之后版本介绍更新介绍
 
