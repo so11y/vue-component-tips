@@ -1,8 +1,8 @@
 {
-    "name": "vue auto component tips",
-    "displayName": "",
-    "description": "",
-    "version": "0.1.4",
+    "name": "vue-component-tips",
+    "displayName": "vue-component-tips",
+    "description": "vue 组件提示",
+    "version": "0.1.5",
     "publisher": "zrrz",
     "author": {
         "name": "zrrz",
@@ -11,10 +11,12 @@
     "keywords": [
         "vue",
         "hint",
-        "component"
+        "component",
+        "tips",
+        "uni"
     ],
     "repository": {
-        "url": "https://github.com/2470761262/uniSaas"
+        "url": "https://github.com/so11y/vue-component-tips"
     },
     "engines": {
         "vscode": "^1.59.0"
