@@ -2,7 +2,7 @@
     "name": "vue-component-tips",
     "displayName": "vue-component-tips",
     "description": "vue 组件提示",
-    "version": "0.1.6",
+    "version": "0.1.8",
     "publisher": "zrrz",
     "author": {
         "name": "zrrz",
@@ -30,7 +30,7 @@
     "main": "./out/extension.js",
     "contributes": {
         "configuration": {
-            "title": "uniapp扫描组件提示",
+            "title": "vue组件提示",
             "properties": {
                 "zrrz.projectName": {
                     "type": "string",
@@ -42,19 +42,9 @@
                     "description": "扫描文件配置",
                     "default": [
                         {
-                            "path": "/src/common/components/**/*.vue",
+                            "path": "/src/**/components/**/*.vue",
                             "alias": "",
                             "sub": false
-                        },
-                        {
-                            "path": "/src/components/**/*.vue",
-                            "alias": "gc-",
-                            "sub": false
-                        },
-                        {
-                            "path": "/src/*(goods|guest|home|live|shop|single-page|user)/components/**/*.vue",
-                            "alias": "sub-",
-                            "sub": true
                         }
                     ]
                 }

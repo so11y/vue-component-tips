@@ -60,6 +60,14 @@ const fileFactorys: Array<FilesConfigFactory> = [
     })
 ];
 
+2. 默认配置
+
+new FilesConfigFactory({
+    path: "/src/**/components/**/*.vue",
+    alias: "sub-",
+    sub: false,
+})
+
 ```
 
 6. 枚举提示 (在使用这个组件提示color属性时会触发枚举提示,混合了','符号将不会提示枚举,只提示default)
