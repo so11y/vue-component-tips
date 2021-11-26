@@ -64,7 +64,7 @@ const fileFactorys: Array<FilesConfigFactory> = [
 
 new FilesConfigFactory({
     path: "/src/**/components/**/*.vue",
-    alias: "sub-",
+    alias: "",
     sub: false,
 })
 
