@@ -1,12 +1,4 @@
-<!--
- * @Author: your name
- * @Date: 2021-08-28 18:12:20
- * @LastEditTime: 2021-09-27 17:04:44
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \testd:\correlationComponents\tesc\README.md
--->
-# uniSass README 有兴趣一起玩的请联系
+# vue-component-tips README 有兴趣一起玩的请联系
 
 1. ### 如果不能安装请更新vscode
 
@@ -18,25 +10,25 @@
 ```
 
 2. ### 使用前先看
-   1. 由于page.json解析失败 转为硬编码实现
-   2. 目前saas各个组件基本都有提示
+   1. 用于快捷提示vue组建,当前如果你是ts可以使用官方的更好.
+   2. 安装之后,先配置你的项目名称,跟你当前的根目录相同,还没有支持多项目
+   3. 参考下面的配置设置你的组件路径,也可以是node_modules,中的文件
 
 <br/>
 
 ---
 <br/>
 
-3. ### 设置saas目录
-   1. 如果你的项目名称就是saas可以跳过
-   2. 设置项目目录(vscode右下角设置里的设置选择扩展)
-   3. 修改你的目录名称(不用重启vscode)修改完保存即可
+3. ### 设置目录
+   1. 设置项目目录(vscode右下角设置里的设置选择扩展)
+   2. 修改你的目录名称(不用重启vscode)修改完保存即可
 
 <br/>
 
 ---
 <br/>
 
-4. ### 如果你的工作区有多个需要提示的saas(暂不支持)
+4. ### 如果你的工作区有多个需要提示(暂不支持)
 
 <br/>
 
